@@ -1,0 +1,31 @@
+
+> meson_web@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1904ms
+ ✓ Compiled /api/reservas in 270ms (172 modules)
+Campos enviando a Airtable: {
+  "Nombre_Cliente": "Test Error",
+  "Telefono": "1234567890",
+  "Fecha": "2026-03-30",
+  "Personas": 50,
+  "Tipo": "Evento",
+  "Estado": "Planeada",
+  "Paquetes": [
+    "rec12345678"
+  ],
+  "Precio_Estimado": "15000"
+}
+(node:3176) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Error detallado: AirtableError {
+  error: 'INVALID_RECORD_ID',
+  message: 'Value "rec12345678" is not a valid record ID.',
+  statusCode: 422
+}
+ POST /api/reservas 500 in 978ms

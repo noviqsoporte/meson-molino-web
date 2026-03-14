@@ -1,0 +1,3 @@
+﻿app/api/configuracion/route.ts(2,55): error TS2307: Cannot find module '@/lib/airtable' or its corresponding type declarations.
+app/api/paquetes/route.ts(2,77): error TS2307: Cannot find module '@/lib/airtable' or its corresponding type declarations.
+app/api/reservas/route.ts(2,74): error TS2307: Cannot find module '@/lib/airtable' or its corresponding type declarations.
