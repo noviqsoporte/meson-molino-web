@@ -36,4 +36,7 @@ export interface Configuracion {
   tagline: string
   direccion: string
   horarios: string
+  color_primario?: string
+  color_secundario?: string
+  color_acento?: string
 }

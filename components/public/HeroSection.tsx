@@ -5,7 +5,7 @@ import { Configuracion } from '@/lib/types'
 export default function HeroSection({ config }: { config: Configuracion | null }) {
   const bgImage = config?.hero_foto_url 
     ? `url('${config.hero_foto_url}')` 
-    : 'linear-gradient(to bottom right, #1F3D2B, #3F6F4E)'
+    : 'linear-gradient(to bottom right, var(--color-primario), var(--color-acento))'
     
   const nombre = config?.nombre_negocio || 'El Mesón del Molino'
   const tagline = config?.tagline || 'Experiencias culinarias y eventos inolvidables'

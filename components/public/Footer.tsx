@@ -6,7 +6,7 @@ export default function Footer({ config }: { config: Configuracion | null }) {
   const tagline = config?.tagline || 'Experiencias culinarias y eventos inolvidables'
 
   return (
-    <footer className="bg-[#1F3D2B] text-white pt-16 pb-8">
+    <footer className="bg-[var(--color-primario)] text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left mb-12">
           
@@ -66,7 +66,7 @@ export default function Footer({ config }: { config: Configuracion | null }) {
         </div>
 
         {/* Separator & Copyright */}
-        <div className="border-t border-[#C9A227] pt-8 text-center text-xs text-[#A8B5A2]">
+        <div className="border-t border-[var(--color-secundario)] pt-8 text-center text-xs text-[#A8B5A2]">
           <p>© 2025 El Mesón del Molino. Todos los derechos reservados.</p>
         </div>
       </div>
