@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllPaquetes, createPaquete, updatePaquete, deletePaquete } from '@/lib/airtable'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const paquetes = await getAllPaquetes()

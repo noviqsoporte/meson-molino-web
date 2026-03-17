@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getReservas, createReserva, updateReserva, deleteReserva } from '@/lib/airtable'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const reservas = await getReservas()
