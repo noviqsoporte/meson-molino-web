@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getConfiguracion, updateConfiguracion } from '@/lib/airtable'
 
 export const dynamic = 'force-dynamic'
