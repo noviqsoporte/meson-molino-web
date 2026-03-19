@@ -19,7 +19,10 @@ export default function PaquetesAdmin() {
         nombre: '',
         descripcion: '',
         foto_url: '',
-        precio_fijo: '',
+        precio_por_persona: '',
+        tipo: 'Evento',
+        precio_nino: '',
+        horario: '',
         personas_min: 1,
         personas_max: 10,
         incluye: '',
@@ -101,7 +104,10 @@ export default function PaquetesAdmin() {
                 nombre: paquete.nombre,
                 descripcion: paquete.descripcion,
                 foto_url: paquete.foto_url,
-                precio_fijo: paquete.precio_fijo?.replace(/[^0-9.]/g, '') || '',
+                precio_por_persona: paquete.precio_por_persona?.replace(/[^0-9.]/g, '') || '',
+                tipo: paquete.tipo || 'Evento',
+                precio_nino: paquete.precio_nino?.replace(/[^0-9.]/g, '') || '',
+                horario: paquete.horario || '',
                 personas_min: paquete.personas_min,
                 personas_max: paquete.personas_max,
                 incluye: paquete.incluye,
@@ -114,7 +120,10 @@ export default function PaquetesAdmin() {
                 nombre: '',
                 descripcion: '',
                 foto_url: '',
-                precio_fijo: '',
+                precio_por_persona: '',
+                tipo: 'Evento',
+                precio_nino: '',
+                horario: '',
                 personas_min: 1,
                 personas_max: 10,
                 incluye: '',
@@ -189,7 +198,7 @@ export default function PaquetesAdmin() {
                         style: 'currency',
                         currency: 'MXN',
                         minimumFractionDigits: 0
-                    }).format(parseFloat(paquete.precio_fijo?.replace(/[^0-9.]/g, '') || '0') || 0)
+                    }).format(parseFloat(paquete.precio_por_persona?.replace(/[^0-9.]/g, '') || '0') || 0)
 
                     return (
                         <div key={paquete.id} className={`bg-white rounded-xl border ${paquete.activo ? 'border-[#E8E4DF]' : 'border-red-200'} shadow-[0_2px_8px_rgba(31,61,43,0.08)] overflow-hidden flex flex-col`}>
@@ -218,14 +227,28 @@ export default function PaquetesAdmin() {
 
                             <div className="p-6 flex-1 flex flex-col">
                                 <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-playfair text-xl text-[var(--color-primario)] line-clamp-1">{paquete.nombre}</h3>
-                                    <span className="font-inter font-semibold text-[var(--color-primario)]">{precioFormateado} MXN</span>
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="font-playfair text-xl text-[var(--color-primario)] line-clamp-1">{paquete.nombre}</h3>
+                                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${paquete.tipo === 'Buffet' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'}`}>
+                                            {paquete.tipo || 'Evento'}
+                                        </span>
+                                    </div>
+                                    <span className="font-inter font-semibold text-[var(--color-primario)] whitespace-nowrap ml-2">{precioFormateado} / persona</span>
                                 </div>
                                 <p className="text-sm font-inter text-[#5C5C5C] mb-4 line-clamp-2 flex-1">{paquete.descripcion}</p>
 
                                 <div className="flex items-center space-x-2 text-sm text-[#5C5C5C] font-inter mb-4">
-                                    <span className="bg-[#F7F5F2] px-2 py-1 rounded">Min: {paquete.personas_min} pax</span>
-                                    <span className="bg-[#F7F5F2] px-2 py-1 rounded">Max: {paquete.personas_max} pax</span>
+                                    {paquete.tipo === 'Buffet' ? (
+                                        <>
+                                            {paquete.horario && <span className="bg-[#F7F5F2] px-2 py-1 rounded">🕐 {paquete.horario}</span>}
+                                            {paquete.precio_nino && <span className="bg-[#F7F5F2] px-2 py-1 rounded">🧒 Niño: ${paquete.precio_nino}</span>}
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="bg-[#F7F5F2] px-2 py-1 rounded">Min: {paquete.personas_min} pax</span>
+                                            <span className="bg-[#F7F5F2] px-2 py-1 rounded">Max: {paquete.personas_max} pax</span>
+                                        </>
+                                    )}
                                 </div>
 
                                 <div className="flex items-center justify-between pt-4 border-t border-[#E8E4DF]">
@@ -309,15 +332,52 @@ export default function PaquetesAdmin() {
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Precio Fijo ($) *</label>
+                                            <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Tipo de Paquete *</label>
+                                            <select
+                                                value={formData.tipo || 'Evento'}
+                                                onChange={(e) => setFormData({ ...formData, tipo: e.target.value as 'Evento' | 'Buffet' })}
+                                                className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)] bg-white cursor-pointer"
+                                            >
+                                                <option value="Evento">Evento</option>
+                                                <option value="Buffet">Buffet</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">{formData.tipo === 'Buffet' ? 'Precio Adulto ($) *' : 'Precio por Persona ($) *'}</label>
                                             <input
                                                 type="number"
                                                 required
-                                                value={formData.precio_fijo}
-                                                onChange={(e) => setFormData({ ...formData, precio_fijo: e.target.value })}
+                                                value={formData.precio_por_persona}
+                                                onChange={(e) => setFormData({ ...formData, precio_por_persona: e.target.value })}
                                                 className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
                                             />
                                         </div>
+
+                                        {formData.tipo === 'Buffet' && (
+                                            <>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Precio Niño ($)</label>
+                                                    <input
+                                                        type="number"
+                                                        value={formData.precio_nino || ''}
+                                                        onChange={(e) => setFormData({ ...formData, precio_nino: e.target.value })}
+                                                        className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
+                                                        placeholder="Ej. 180"
+                                                    />
+                                                </div>
+                                                <div className="md:col-span-2">
+                                                    <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Horario</label>
+                                                    <input
+                                                        type="text"
+                                                        value={formData.horario || ''}
+                                                        onChange={(e) => setFormData({ ...formData, horario: e.target.value })}
+                                                        className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
+                                                        placeholder="Ej. 8:00am a 1:30pm"
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
 
                                         <div>
                                             <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Orden de visualización</label>
@@ -330,29 +390,33 @@ export default function PaquetesAdmin() {
                                             />
                                         </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Personas Mínimas *</label>
-                                            <input
-                                                type="number"
-                                                required
-                                                min="1"
-                                                value={formData.personas_min}
-                                                onChange={(e) => setFormData({ ...formData, personas_min: parseInt(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
-                                            />
-                                        </div>
+                                        {formData.tipo !== 'Buffet' && (
+                                            <>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Personas Mínimas *</label>
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        min="1"
+                                                        value={formData.personas_min}
+                                                        onChange={(e) => setFormData({ ...formData, personas_min: parseInt(e.target.value) })}
+                                                        className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
+                                                    />
+                                                </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Personas Máximas *</label>
-                                            <input
-                                                type="number"
-                                                required
-                                                min={formData.personas_min}
-                                                value={formData.personas_max}
-                                                onChange={(e) => setFormData({ ...formData, personas_max: parseInt(e.target.value) })}
-                                                className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
-                                            />
-                                        </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Personas Máximas *</label>
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        min={formData.personas_min}
+                                                        value={formData.personas_max}
+                                                        onChange={(e) => setFormData({ ...formData, personas_max: parseInt(e.target.value) })}
+                                                        className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
 
                                         <div className="md:col-span-2">
                                             <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">¿Qué incluye? (Opcional, markdown/texto libre)</label>

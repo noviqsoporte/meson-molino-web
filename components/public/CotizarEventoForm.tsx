@@ -34,11 +34,10 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
   
   const minPersonas = paqueteSeleccionado?.personas_min || 1
   const maxPersonas = paqueteSeleccionado?.personas_max || 500
-  const precioFijo = paqueteSeleccionado ? parseFloat(paqueteSeleccionado.precio_fijo) : 0
+  const precioPerPersona = paqueteSeleccionado ? parseFloat(paqueteSeleccionado.precio_por_persona) : 0
   
   const personasNum = parseInt(formData.personas) || 0
-  const precioPorPersona = personasNum > 0 ? (precioFijo / personasNum) : 0
-  const precioEstimadoTotal = precioFijo
+  const precioEstimadoTotal = precioPerPersona * (personasNum || minPersonas)
 
   const handlePaqueteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = e.target.value
@@ -206,13 +205,13 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
                   <span className="font-medium text-brand-dark text-right ml-2">{paqueteSeleccionado.nombre}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Inversión Total Fija:</span>
-                  <span className="font-medium text-brand-dark">${precioEstimadoTotal.toLocaleString('es-MX')} MXN</span>
+                  <span>Precio por persona:</span>
+                  <span className="font-medium text-brand-dark">${precioPerPersona.toLocaleString('es-MX')} MXN</span>
                 </div>
                 <div className="flex justify-between pt-2 border-t border-brand-gold/20">
-                  <span className="text-gray-500">Precio estimado por persona ({personasNum}):</span>
+                  <span className="text-gray-500">Total estimado ({personasNum} personas):</span>
                   <span className="font-bold text-brand-olive text-base">
-                    ${precioPorPersona.toLocaleString('es-MX', { maximumFractionDigits: 0 })} MXN
+                    ${precioEstimadoTotal.toLocaleString('es-MX', { maximumFractionDigits: 0 })} MXN
                   </span>
                 </div>
               </div>
@@ -231,3 +230,4 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
     </div>
   )
 }
+

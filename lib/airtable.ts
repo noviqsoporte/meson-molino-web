@@ -22,7 +22,10 @@ export async function getPaquetes(): Promise<Paquete[]> {
     nombre: r.get('Nombre') as string || '',
     descripcion: r.get('Descripcion') as string || '',
     foto_url: r.get('Foto_URL') as string || '',
-    precio_fijo: r.get('Precio_Fijo') as string || '0',
+    precio_por_persona: r.get('Precio_Por_Persona') as string || '0',
+    tipo: r.get('Tipo') as 'Evento' | 'Buffet' || 'Evento',
+    precio_nino: r.get('Precio_Nino') as string || undefined,
+    horario: r.get('Horario') as string || undefined,
     personas_min: r.get('Personas_Min') as number || 0,
     personas_max: r.get('Personas_Max') as number || 0,
     incluye: r.get('Incluye') as string || '',
@@ -41,7 +44,10 @@ export async function getAllPaquetes(): Promise<Paquete[]> {
     nombre: r.get('Nombre') as string || '',
     descripcion: r.get('Descripcion') as string || '',
     foto_url: r.get('Foto_URL') as string || '',
-    precio_fijo: r.get('Precio_Fijo') as string || '0',
+    precio_por_persona: r.get('Precio_Por_Persona') as string || '0',
+    tipo: r.get('Tipo') as 'Evento' | 'Buffet' || 'Evento',
+    precio_nino: r.get('Precio_Nino') as string || undefined,
+    horario: r.get('Horario') as string || undefined,
     personas_min: r.get('Personas_Min') as number || 0,
     personas_max: r.get('Personas_Max') as number || 0,
     incluye: r.get('Incluye') as string || '',
@@ -55,7 +61,10 @@ export async function createPaquete(data: Omit<Paquete, 'id'>): Promise<Paquete>
     Nombre: data.nombre,
     Descripcion: data.descripcion,
     Foto_URL: data.foto_url,
-    Precio_Fijo: data.precio_fijo,
+    Precio_Por_Persona: data.precio_por_persona,
+    Tipo: data.tipo,
+    Precio_Nino: data.precio_nino || '',
+    Horario: data.horario || '',
     Personas_Min: data.personas_min,
     Personas_Max: data.personas_max,
     Incluye: data.incluye,
@@ -70,12 +79,15 @@ export async function updatePaquete(id: string, data: Partial<Omit<Paquete, 'id'
   if (data.nombre !== undefined) fields['Nombre'] = data.nombre
   if (data.descripcion !== undefined) fields['Descripcion'] = data.descripcion
   if (data.foto_url !== undefined) fields['Foto_URL'] = data.foto_url
-  if (data.precio_fijo !== undefined) fields['Precio_Fijo'] = data.precio_fijo
+  if (data.precio_por_persona !== undefined) fields['Precio_Por_Persona'] = data.precio_por_persona
   if (data.personas_min !== undefined) fields['Personas_Min'] = data.personas_min
   if (data.personas_max !== undefined) fields['Personas_Max'] = data.personas_max
   if (data.incluye !== undefined) fields['Incluye'] = data.incluye
   if (data.activo !== undefined) fields['Activo'] = data.activo
   if (data.orden !== undefined) fields['Orden'] = data.orden
+  if (data.tipo !== undefined) fields['Tipo'] = data.tipo
+  if (data.precio_nino !== undefined) fields['Precio_Nino'] = data.precio_nino
+  if (data.horario !== undefined) fields['Horario'] = data.horario
   await tablaPaquetes.update(id, fields)
 }
 

@@ -1,7 +1,7 @@
 import { Paquete } from '@/lib/types'
 import PaqueteCard from './PaqueteCard'
 
-export default function PaquetesSection({ paquetes }: { paquetes: Paquete[] }) {
+export default function PaquetesSection({ paquetes, telefonoWa }: { paquetes: Paquete[]; telefonoWa?: string }) {
   if (!paquetes || paquetes.length === 0) return null
 
   return (
@@ -19,7 +19,7 @@ export default function PaquetesSection({ paquetes }: { paquetes: Paquete[] }) {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-lg md:max-w-none mx-auto">
           {paquetes.map((paquete, idx) => (
             <div key={paquete.id} style={{ animationDelay: `${(idx % 3) * 100 + 100}ms` }} className="opacity-0-init animate-slide-up-fade h-full">
-              <PaqueteCard paquete={paquete} />
+              <PaqueteCard paquete={paquete} telefonoWa={telefonoWa} />
             </div>
           ))}
         </div>
@@ -27,3 +27,4 @@ export default function PaquetesSection({ paquetes }: { paquetes: Paquete[] }) {
     </section>
   )
 }
+

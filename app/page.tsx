@@ -37,7 +37,7 @@ export default async function Home() {
         <HeroSection config={config} />
         
         {paquetes.length > 0 ? (
-          <PaquetesSection paquetes={paquetes} />
+          <PaquetesSection paquetes={paquetes} telefonoWa={config?.telefono_wa} />
         ) : (
           <div className="py-20 text-center bg-brand-bg">
             <p className="text-gray-500">No hay paquetes disponibles en este momento.</p>

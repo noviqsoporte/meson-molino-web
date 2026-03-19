@@ -4,14 +4,17 @@ import { useState } from 'react'
 import { Paquete } from '@/lib/types'
 import { Users } from 'lucide-react'
 
-export default function PaqueteCard({ paquete }: { paquete: Paquete }) {
+const formatCurrency = (val: string | undefined) =>
+  new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0 })
+    .format(parseFloat(val || '0') || 0)
+
+export default function PaqueteCard({ paquete, telefonoWa }: { paquete: Paquete; telefonoWa?: string }) {
   const minPersonas = paquete.personas_min || 1
   const maxPersonas = paquete.personas_max || 500
   const [personasInput, setPersonasInput] = useState<string>(minPersonas.toString())
 
-  const personasNum = parseInt(personasInput) || 0
-  const precioFijoNum = parseFloat(paquete.precio_fijo) || 0
-  const precioPorPersona = personasNum > 0 ? (precioFijoNum / personasNum) : 0
+  const personas = personasInput
+  const isBuffet = paquete.tipo === 'Buffet'
 
   const handleBlur = () => {
     let p = parseInt(personasInput)
@@ -28,6 +31,12 @@ export default function PaqueteCard({ paquete }: { paquete: Paquete }) {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+
+  const handleWhatsApp = () => {
+    const phone = telefonoWa?.replace(/\D/g, '') || ''
+    const msg = encodeURIComponent(`Hola, me interesa el paquete "${paquete.nombre}" (Buffet). ¿Tienen disponibilidad?`)
+    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank')
   }
 
   const itemsIncluye = paquete.incluye
@@ -52,16 +61,28 @@ export default function PaqueteCard({ paquete }: { paquete: Paquete }) {
             No Image
           </div>
         )}
-        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow inline-flex items-center gap-1.5 text-sm font-medium text-brand-dark">
-          <Users className="w-4 h-4 text-brand-gold" />
-          {paquete.personas_min} - {paquete.personas_max} personas
-        </div>
+        {isBuffet ? (
+          <div className="absolute top-4 right-4 bg-[var(--color-secundario)] text-white px-3 py-1.5 rounded-full shadow inline-flex items-center gap-1.5 text-sm font-semibold">
+            🍽️ Buffet
+          </div>
+        ) : (
+          <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow inline-flex items-center gap-1.5 text-sm font-medium text-brand-dark">
+            <Users className="w-4 h-4 text-brand-gold" />
+            {paquete.personas_min} - {paquete.personas_max} personas
+          </div>
+        )}
       </div>
 
       <div className="p-6 md:p-8 flex flex-col flex-grow">
-        <h3 className="font-playfair text-2xl font-bold text-brand-dark mb-2">
+        <h3 className="font-playfair text-2xl font-bold text-brand-dark mb-1">
           {paquete.nombre}
         </h3>
+
+        {isBuffet && paquete.horario && (
+          <p style={{ fontSize: '14px', color: 'var(--color-acento)', fontWeight: '500', marginBottom: '8px' }}>
+            ☀️ {paquete.horario}
+          </p>
+        )}
 
         <p className="text-gray-600 mb-6 text-sm leading-relaxed min-h-[40px]">
           {paquete.descripcion}
@@ -79,46 +100,77 @@ export default function PaqueteCard({ paquete }: { paquete: Paquete }) {
           </ul>
         </div>
 
-        <div className="bg-brand-bg rounded-lg p-4 mb-6 border border-brand-gold/20 shrink-0">
-          <div className="text-center mb-4">
-            <span className="block text-xs uppercase tracking-wider text-gray-500 mb-1">Precio Fijo</span>
-            <span className="font-playfair text-3xl text-brand-dark font-bold">
-              ${precioFijoNum.toLocaleString('es-MX')} <span className="text-lg">MXN</span>
-            </span>
+        {isBuffet ? (
+          /* ── BUFFET: show adult/child prices ── */
+          <div style={{ background: '#F7F5F2', borderRadius: '8px', padding: '12px 16px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '14px', color: '#2B2B2B' }}>👤 Adulto</span>
+              <span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-primario)' }}>
+                {formatCurrency(paquete.precio_por_persona)} MXN
+              </span>
+            </div>
+            {paquete.precio_nino && (
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', color: '#2B2B2B' }}>🧒 Niño (3-9 años)</span>
+                <span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--color-acento)' }}>
+                  {formatCurrency(paquete.precio_nino)} MXN
+                </span>
+              </div>
+            )}
           </div>
-
-          <div className="pt-4 border-t border-brand-gold/20">
-            <label className="block text-sm text-brand-dark mb-2 font-medium">
-              Calculadora: ¿Cuántas personas asistirán?
-            </label>
-            <div className="flex items-center gap-3">
+        ) : (
+          /* ── EVENTO: calculator ── */
+          <div className="bg-brand-bg rounded-lg p-4 mb-6 border border-brand-gold/20 shrink-0">
+            <div className="mb-4">
+              <label className="block text-sm text-brand-dark mb-2 font-medium">
+                ¿Cuántas personas asistirán?
+              </label>
               <input
                 type="number"
                 min={paquete.personas_min}
                 max={paquete.personas_max}
-                value={personasInput === '0' ? '' : personasInput}
+                value={personas === '0' ? '' : personas}
                 onChange={(e) => setPersonasInput(e.target.value)}
                 onFocus={(e) => e.target.select()}
                 onBlur={handleBlur}
                 placeholder={`ej. ${minPersonas + 5}`}
                 className="w-20 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none text-center"
               />
-              <div className="flex-1 text-right">
-                <span className="block text-xs text-gray-500">Precio por persona:</span>
-                <span className="font-semibold text-brand-dark text-lg">
-                  ${precioPorPersona.toLocaleString('es-MX', { maximumFractionDigits: 0 })} MXN
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span style={{ fontSize: '13px', color: '#6B7280' }}>Precio por persona:</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--color-primario)' }}>
+                  {formatCurrency(paquete.precio_por_persona)} MXN
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', color: '#2B2B2B' }}>Total estimado:</span>
+                <span style={{ fontSize: '15px', fontWeight: '700', color: 'var(--color-secundario)' }}>
+                  {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0 })
+                    .format((parseFloat(paquete.precio_por_persona) || 0) * (parseInt(personas) || paquete.personas_min))} MXN
                 </span>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <button
-          onClick={handleCotizar}
-          className="w-full bg-brand-dark text-white hover:bg-brand-olive transition-colors py-3.5 rounded-lg font-medium shadow-md flex items-center justify-center gap-2 shrink-0 group"
-        >
-          Cotizar este paquete
-        </button>
+        {isBuffet ? (
+          <button
+            onClick={handleWhatsApp}
+            className="w-full bg-brand-dark text-white hover:bg-brand-olive transition-colors py-3.5 rounded-lg font-medium shadow-md flex items-center justify-center gap-2 shrink-0 group"
+          >
+            Ver disponibilidad
+          </button>
+        ) : (
+          <button
+            onClick={handleCotizar}
+            className="w-full bg-brand-dark text-white hover:bg-brand-olive transition-colors py-3.5 rounded-lg font-medium shadow-md flex items-center justify-center gap-2 shrink-0 group"
+          >
+            Cotizar este paquete
+          </button>
+        )}
       </div>
     </div>
   )

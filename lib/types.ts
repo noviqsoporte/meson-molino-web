@@ -3,7 +3,10 @@ export interface Paquete {
   nombre: string
   descripcion: string
   foto_url: string
-  precio_fijo: string
+  precio_por_persona: string
+  tipo: 'Evento' | 'Buffet'
+  precio_nino?: string
+  horario?: string
   personas_min: number
   personas_max: number
   incluye: string
