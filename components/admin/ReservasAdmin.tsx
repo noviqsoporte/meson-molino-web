@@ -1,15 +1,16 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Reserva } from '@/lib/types'
-import { Plus, Edit2, Trash2, X } from 'lucide-react'
+import { Reserva, Paquete } from '@/lib/types'
+import { Plus, Edit2, Trash2, X, Eye } from 'lucide-react'
 
 type StatusOption = 'Planeada' | 'Confirmada' | 'Agendada' | 'Cancelada'
 
-export default function ReservasAdmin() {
+export default function ReservasAdmin({ paquetes = [] }: { paquetes?: Paquete[] }) {
     const [reservas, setReservas] = useState<Reserva[]>([])
     const [loading, setLoading] = useState(true)
 
+    // Filters
     // Filters
     const [filterEstado, setFilterEstado] = useState<'Todos' | StatusOption>('Todos')
     const [searchTerm, setSearchTerm] = useState('')
@@ -18,6 +19,7 @@ export default function ReservasAdmin() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [modalMode, setModalMode] = useState<'create' | 'edit'>('create')
     const [editingId, setEditingId] = useState<string | null>(null)
+    const [reservaDetalle, setReservaDetalle] = useState<Reserva | null>(null)
 
     // Form State
     const [formData, setFormData] = useState<Partial<Reserva>>({
@@ -267,6 +269,13 @@ export default function ReservasAdmin() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center justify-center space-x-3">
+                                            <button 
+                                                onClick={() => setReservaDetalle(reserva)} 
+                                                title="Ver detalles"
+                                                className="text-[#5C5C5C] hover:text-[var(--color-primario)] transition-colors"
+                                            >
+                                                <Eye size={18} />
+                                            </button>
                                             <button onClick={() => openModal('edit', reserva)} className="text-[var(--color-acento)] hover:text-[var(--color-primario)] transition-colors" title="Editar">
                                                 <Edit2 size={18} />
                                             </button>
@@ -420,6 +429,88 @@ export default function ReservasAdmin() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Modal Detalle de Reserva */}
+            {reservaDetalle && (
+              <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 50,
+                display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ background: 'white', borderRadius: '16px', padding: '32px',
+                  width: '100%', maxWidth: '480px', position: 'relative' }}>
+
+                  {/* Header */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                    <h2 style={{ fontFamily: 'Playfair Display', fontSize: '20px', color: 'var(--color-primario)', margin: 0 }}>
+                      Detalle de Reserva
+                    </h2>
+                    <button onClick={() => setReservaDetalle(null)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', color: '#6B7280' }}>✕</button>
+                  </div>
+
+                  {/* Contenido en grid de 2 columnas */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+                    {[
+                      { label: '👤 Cliente', value: reservaDetalle.nombre_cliente },
+                      { label: '📱 Teléfono', value: reservaDetalle.telefono },
+                      { label: '📅 Fecha', value: reservaDetalle.fecha },
+                      { label: '🕐 Hora', value: reservaDetalle.hora },
+                      { label: '👥 Personas', value: reservaDetalle.personas },
+                      { label: '📋 Estado', value: reservaDetalle.estado },
+                    ].map(({ label, value }) => (
+                      <div key={label}>
+                        <div style={{ fontSize: '11px', fontWeight: '600', color: '#9CA3AF',
+                          textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>
+                          {label}
+                        </div>
+                        <div style={{ fontSize: '14px', fontWeight: '500', color: '#2B2B2B' }}>
+                          {value || '—'}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Buffet/Paquete — solo si existe */}
+                  {reservaDetalle.paquete_id && (
+                    <div style={{ background: 'var(--color-primario)10', border: '1px solid var(--color-secundario)',
+                      borderRadius: '10px', padding: '14px 16px', marginBottom: '16px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: '600', color: '#9CA3AF',
+                        textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+                        🍽️ Incluye Buffet
+                      </div>
+                      <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--color-primario)', marginBottom: '4px' }}>
+                        {paquetes.find(p => p.id === reservaDetalle.paquete_id)?.nombre || 'Buffet incluido'}
+                      </div>
+                      {reservaDetalle.precio_estimado && (
+                        <div style={{ fontSize: '13px', color: '#4B5563' }}>
+                          Precio estimado: <strong>${parseFloat(reservaDetalle.precio_estimado).toLocaleString('es-MX')} MXN</strong>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Notas admin — solo si existen */}
+                  {reservaDetalle.notas_admin && (
+                    <div style={{ marginBottom: '16px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: '600', color: '#9CA3AF',
+                        textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>
+                        📝 Notas
+                      </div>
+                      <div style={{ fontSize: '14px', color: '#4B5563', background: '#F9FAFB',
+                        borderRadius: '8px', padding: '10px 12px' }}>
+                        {reservaDetalle.notas_admin}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fecha de creación */}
+                  {reservaDetalle.fecha_creacion && (
+                    <div style={{ fontSize: '12px', color: '#9CA3AF', textAlign: 'right' }}>
+                      Registrada el {new Date(reservaDetalle.fecha_creacion).toLocaleDateString('es-MX')}
+                    </div>
+                  )}
+
+                </div>
+              </div>
             )}
         </div>
     )

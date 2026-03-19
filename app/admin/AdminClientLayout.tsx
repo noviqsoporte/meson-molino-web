@@ -9,12 +9,14 @@ import EventosAdmin from '@/components/admin/EventosAdmin'
 import PaquetesAdmin from '@/components/admin/PaquetesAdmin'
 import ConfiguracionAdmin from '@/components/admin/ConfiguracionAdmin'
 import type { Section } from '@/components/admin/Sidebar'
+import { Paquete } from '@/lib/types'
 
 interface AdminClientLayoutProps {
     hasSession: boolean
+    paquetes: Paquete[]
 }
 
-export default function AdminClientLayout({ hasSession }: AdminClientLayoutProps) {
+export default function AdminClientLayout({ hasSession, paquetes }: AdminClientLayoutProps) {
     const [currentSection, setCurrentSection] = useState<Section>('dashboard')
 
     if (!hasSession) {
@@ -26,7 +28,7 @@ export default function AdminClientLayout({ hasSession }: AdminClientLayoutProps
             case 'dashboard':
                 return <DashboardHome />
             case 'reservas':
-                return <ReservasAdmin />
+                return <ReservasAdmin paquetes={paquetes} />
             case 'eventos':
                 return <EventosAdmin />
             case 'paquetes':
