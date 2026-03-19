@@ -50,7 +50,7 @@ export default async function Home() {
               
               {/* Formulario Reserva de Mesa */}
               <div className="opacity-0-init animate-slide-up-fade" style={{ animationDelay: '100ms' }}>
-                <ReservaMesaForm />
+                <ReservaMesaForm paquetes={paquetes} />
               </div>
               
               {/* Formulario Cotizar Evento */}
