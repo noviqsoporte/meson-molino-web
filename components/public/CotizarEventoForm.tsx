@@ -5,12 +5,14 @@ import { Paquete } from '@/lib/types'
 import { CheckCircle, Info } from 'lucide-react'
 
 export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] }) {
+  const paquetesEvento = paquetes.filter(p => p.tipo === 'Evento')
+
   const [formData, setFormData] = useState({
     nombre_cliente: '',
     telefono: '',
     fecha: '',
-    paquete_id: paquetes.length > 0 ? paquetes[0].id : '',
-    personas: paquetes.length > 0 ? paquetes[0].personas_min.toString() : '50'
+    paquete_id: paquetesEvento.length > 0 ? paquetesEvento[0].id : '',
+    personas: paquetesEvento.length > 0 ? paquetesEvento[0].personas_min.toString() : '50'
   })
 
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
     const handleSelectPaquete = (e: Event) => {
       const customEvent = e as CustomEvent<string>
       const paqId = customEvent.detail
-      const paq = paquetes.find(p => p.id === paqId)
+      const paq = paquetes.find(p => p.id === paqId && p.tipo === 'Evento')
       if (paq) {
         setFormData(prev => ({ ...prev, paquete_id: paqId, personas: paq.personas_min.toString() }))
       }
@@ -30,7 +32,7 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
   
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
-  const paqueteSeleccionado = paquetes.find(p => p.id === formData.paquete_id)
+  const paqueteSeleccionado = paquetesEvento.find(p => p.id === formData.paquete_id)
   
   const minPersonas = paqueteSeleccionado?.personas_min || 1
   const maxPersonas = paqueteSeleccionado?.personas_max || 500
@@ -41,7 +43,7 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
 
   const handlePaqueteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = e.target.value
-    const paq = paquetes.find(p => p.id === id)
+    const paq = paquetesEvento.find(p => p.id === id)
     setFormData(prev => ({
       ...prev,
       paquete_id: id,
@@ -163,7 +165,7 @@ export default function CotizarEventoForm({ paquetes }: { paquetes: Paquete[] })
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent outline-none transition-all bg-white"
               >
                 <option value="" disabled>Selecciona un paquete</option>
-                {paquetes.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                {paquetesEvento.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
               </select>
             </div>
           </div>

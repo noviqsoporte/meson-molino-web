@@ -14,6 +14,18 @@ export interface Paquete {
   orden: number
 }
 
+export interface Espacio {
+  id: string
+  nombre: string
+  descripcion: string
+  foto_url_1: string
+  foto_url_2: string
+  foto_url_3: string
+  seccion: 'Restaurante' | 'Salon'
+  orden: number
+  activo: boolean
+}
+
 export interface Reserva {
   id?: string
   nombre_cliente: string

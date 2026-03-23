@@ -29,16 +29,31 @@ export default function HeroSection({ config }: { config: Configuracion | null }
           {tagline}
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0-init animate-slide-up-fade delay-300">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center opacity-0-init animate-slide-up-fade delay-300 max-w-2xl mx-auto">
           <a 
-            href="#paquetes" 
-            className="w-full sm:w-auto bg-brand-dark text-white hover:bg-brand-olive transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+            href="#restaurante" 
+            className="w-full flex items-center justify-center bg-transparent border-2 border-white/80 bg-white/10 text-white hover:bg-white/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
           >
-            Ver Paquetes
+            Restaurante
           </a>
           <a 
+            href="#salon" 
+            className="w-full flex items-center justify-center bg-transparent border-2 border-white/80 bg-white/10 text-white hover:bg-white/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+          >
+            Salón de Eventos
+          </a>
+          <button 
+            type="button"
+            onClick={() => {
+              document.getElementById('salon')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="w-full flex items-center justify-center bg-brand-dark text-white hover:bg-brand-olive transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+          >
+            Ver Paquetes
+          </button>
+          <a 
             href="#reserva-mesa" 
-            className="w-full sm:w-auto bg-transparent border-2 border-brand-gold text-white hover:bg-brand-gold/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+            className="w-full flex items-center justify-center bg-transparent border-2 border-brand-gold text-white hover:bg-brand-gold/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
           >
             Reservar Mesa
           </a>

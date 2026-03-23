@@ -1,8 +1,9 @@
-import { Paquete, Configuracion } from '@/lib/types'
-import { getPaquetes, getConfiguracion } from '@/lib/airtable'
+import { Paquete, Configuracion, Espacio } from '@/lib/types'
+import { getPaquetes, getConfiguracion, getEspacios } from '@/lib/airtable'
 import Navbar from '@/components/public/Navbar'
 import HeroSection from '@/components/public/HeroSection'
-import PaquetesSection from '@/components/public/PaquetesSection'
+import RestauranteSection from '@/components/public/RestauranteSection'
+import SalonEventosSection from '@/components/public/SalonEventosSection'
 import ReservaMesaForm from '@/components/public/ReservaMesaForm'
 import CotizarEventoForm from '@/components/public/CotizarEventoForm'
 import Footer from '@/components/public/Footer'
@@ -13,18 +14,21 @@ export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   let paquetes: Paquete[] = []
+  let espacios: Espacio[] = []
   let config: Configuracion | null = null
 
   try {
     // Usamos las funciones de lib/airtable directamente en lugar de un fetch con URL absoluta
     // para evitar problemas de resolución de host en diferentes entornos (dev vs prod).
     // getPaquetes() ya incluye el filtro `{Activo} = 1`.
-    const [paqData, confData] = await Promise.all([
+    const [paqData, confData, espData] = await Promise.all([
       getPaquetes(),
-      getConfiguracion()
+      getConfiguracion(),
+      getEspacios()
     ])
     paquetes = paqData
     config = confData
+    espacios = espData
   } catch (error) {
     console.error('Error fetching data from Airtable:', error)
   }
@@ -36,13 +40,9 @@ export default async function Home() {
       <main>
         <HeroSection config={config} />
         
-        {paquetes.length > 0 ? (
-          <PaquetesSection paquetes={paquetes} telefonoWa={config?.telefono_wa} />
-        ) : (
-          <div className="py-20 text-center bg-brand-bg">
-            <p className="text-gray-500">No hay paquetes disponibles en este momento.</p>
-          </div>
-        )}
+        <RestauranteSection espacios={espacios} paquetes={paquetes} />
+        
+        <SalonEventosSection espacios={espacios} paquetes={paquetes} />
         
         <section id="reserva-mesa" className="py-20 md:py-24 bg-white relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

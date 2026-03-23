@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Airtable from 'airtable'
-import { Paquete, Reserva, Configuracion } from './types'
+import { Paquete, Reserva, Configuracion, Espacio } from './types'
 
 const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
   .base(process.env.AIRTABLE_BASE_ID!)
@@ -8,6 +8,7 @@ const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
 const tablaPaquetes = base(process.env.AIRTABLE_TABLE_PAQUETES!)
 const tablaReservas = base(process.env.AIRTABLE_TABLE_RESERVAS!)
 const tablaConfiguracion = base(process.env.AIRTABLE_TABLE_CONFIGURACION!)
+const tablaEspacios = base(process.env.AIRTABLE_TABLE_ESPACIOS!)
 
 // ─── PAQUETES ───────────────────────────────────────────
 
@@ -193,4 +194,72 @@ export async function updateConfiguracion(id: string, data: Partial<Omit<Configu
   if (data.color_secundario !== undefined) fields['Color_Secundario'] = data.color_secundario
   if (data.color_acento !== undefined) fields['Color_Acento'] = data.color_acento
   await tablaConfiguracion.update(id, fields)
+}
+
+// ─── ESPACIOS ───────────────────────────────────────────
+
+export async function getEspacios(): Promise<Espacio[]> {
+  const records = await tablaEspacios.select({
+    filterByFormula: '{Activo} = 1',
+    sort: [{ field: 'Orden', direction: 'asc' }]
+  }).all()
+  return records.map(r => ({
+    id: r.id,
+    nombre: r.get('Nombre') as string || '',
+    descripcion: r.get('Descripcion') as string || '',
+    foto_url_1: r.get('Foto_URL_1') as string || '',
+    foto_url_2: r.get('Foto_URL_2') as string || '',
+    foto_url_3: r.get('Foto_URL_3') as string || '',
+    seccion: r.get('Seccion') as 'Restaurante' | 'Salon',
+    orden: r.get('Orden') as number || 0,
+    activo: r.get('Activo') as boolean || false,
+  }))
+}
+
+export async function getAllEspacios(): Promise<Espacio[]> {
+  const records = await tablaEspacios.select({
+    sort: [{ field: 'Orden', direction: 'asc' }]
+  }).all()
+  return records.map(r => ({
+    id: r.id,
+    nombre: r.get('Nombre') as string || '',
+    descripcion: r.get('Descripcion') as string || '',
+    foto_url_1: r.get('Foto_URL_1') as string || '',
+    foto_url_2: r.get('Foto_URL_2') as string || '',
+    foto_url_3: r.get('Foto_URL_3') as string || '',
+    seccion: r.get('Seccion') as 'Restaurante' | 'Salon',
+    orden: r.get('Orden') as number || 0,
+    activo: r.get('Activo') as boolean || false,
+  }))
+}
+
+export async function createEspacio(data: Omit<Espacio, 'id'>): Promise<Espacio> {
+  const record = await tablaEspacios.create({
+    Nombre: data.nombre,
+    Descripcion: data.descripcion,
+    Foto_URL_1: data.foto_url_1,
+    Foto_URL_2: data.foto_url_2,
+    Foto_URL_3: data.foto_url_3,
+    Seccion: data.seccion,
+    Orden: data.orden,
+    Activo: data.activo,
+  })
+  return { id: record.id, ...data }
+}
+
+export async function updateEspacio(id: string, data: Partial<Omit<Espacio, 'id'>>): Promise<void> {
+  const fields: Record<string, any> = {}
+  if (data.nombre !== undefined) fields['Nombre'] = data.nombre
+  if (data.descripcion !== undefined) fields['Descripcion'] = data.descripcion
+  if (data.foto_url_1 !== undefined) fields['Foto_URL_1'] = data.foto_url_1
+  if (data.foto_url_2 !== undefined) fields['Foto_URL_2'] = data.foto_url_2
+  if (data.foto_url_3 !== undefined) fields['Foto_URL_3'] = data.foto_url_3
+  if (data.seccion !== undefined) fields['Seccion'] = data.seccion
+  if (data.orden !== undefined) fields['Orden'] = data.orden
+  if (data.activo !== undefined) fields['Activo'] = data.activo
+  await tablaEspacios.update(id, fields)
+}
+
+export async function deleteEspacio(id: string): Promise<void> {
+  await tablaEspacios.destroy(id)
 }

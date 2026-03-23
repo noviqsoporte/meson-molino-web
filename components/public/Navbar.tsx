@@ -33,8 +33,11 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
           </div>
           
           <div className="hidden md:ml-6 md:flex md:items-center md:space-x-8">
-            <a href="#paquetes" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
-              Paquetes
+            <a href="#restaurante" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
+              Restaurante
+            </a>
+            <a href="#salon" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
+              Salón de Eventos
             </a>
             <a href="#reserva-mesa" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
               Reservar Mesa
@@ -56,11 +59,18 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
         <div className="md:hidden bg-brand-dark shadow-xl">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a
-              href="#paquetes"
+              href="#restaurante"
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-white hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium"
             >
-              Paquetes
+              Restaurante
+            </a>
+            <a
+              href="#salon"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-white hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium"
+            >
+              Salón de Eventos
             </a>
             <a
               href="#reserva-mesa"

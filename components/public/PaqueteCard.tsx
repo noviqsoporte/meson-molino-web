@@ -8,7 +8,7 @@ const formatCurrency = (val: string | undefined) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0 })
     .format(parseFloat(val || '0') || 0)
 
-export default function PaqueteCard({ paquete, telefonoWa }: { paquete: Paquete; telefonoWa?: string }) {
+export default function PaqueteCard({ paquete }: { paquete: Paquete }) {
   const minPersonas = paquete.personas_min || 1
   const maxPersonas = paquete.personas_max || 500
   const [personasInput, setPersonasInput] = useState<string>(minPersonas.toString())
@@ -33,11 +33,7 @@ export default function PaqueteCard({ paquete, telefonoWa }: { paquete: Paquete;
     }
   }
 
-  const handleWhatsApp = () => {
-    const phone = telefonoWa?.replace(/\D/g, '') || ''
-    const msg = encodeURIComponent(`Hola, me interesa el paquete "${paquete.nombre}" (Buffet). ¿Tienen disponibilidad?`)
-    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank')
-  }
+
 
   const itemsIncluye = paquete.incluye
     .replace(/\\n/g, '\n')
@@ -158,10 +154,21 @@ export default function PaqueteCard({ paquete, telefonoWa }: { paquete: Paquete;
 
         {isBuffet ? (
           <button
-            onClick={handleWhatsApp}
-            className="w-full bg-brand-dark text-white hover:bg-brand-olive transition-colors py-3.5 rounded-lg font-medium shadow-md flex items-center justify-center gap-2 shrink-0 group"
+            onClick={() => document.getElementById('reserva-mesa')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'var(--color-primario)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '15px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontFamily: 'Inter, sans-serif'
+            }}
           >
-            Ver disponibilidad
+            Reservar Mesa
           </button>
         ) : (
           <button
