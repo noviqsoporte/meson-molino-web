@@ -17,6 +17,16 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
   }, [])
 
   const nombreRestaurante = config?.nombre_negocio || 'El Mesón del Molino'
+  const logoUrl = config?.logo_url
+
+  const navLinks = [
+    { href: '#restaurante', label: 'Restaurante' },
+    { href: '#buffets', label: 'Buffets' },
+    { href: '#salon', label: 'Salón de Eventos' },
+    { href: '#paquetes-eventos', label: 'Paquetes' },
+    { href: '#reserva-mesa', label: 'Reservar Mesa' },
+    { href: '#cotizar-evento', label: 'Cotizar' },
+  ]
 
   return (
     <nav
@@ -27,23 +37,34 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 flex items-center">
-            <a href="#" className="font-playfair text-white text-2xl font-bold tracking-wider">
-              {nombreRestaurante}
+            <a href="#">
+              {logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={logoUrl}
+                  alt={nombreRestaurante}
+                  className="h-12 w-auto object-contain"
+                />
+              ) : (
+                <span className="font-playfair text-white text-2xl font-bold tracking-wider">
+                  {nombreRestaurante}
+                </span>
+              )}
             </a>
           </div>
-          
-          <div className="hidden md:ml-6 md:flex md:items-center md:space-x-8">
-            <a href="#restaurante" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
-              Restaurante
-            </a>
-            <a href="#salon" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
-              Salón de Eventos
-            </a>
-            <a href="#reserva-mesa" className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors">
-              Reservar Mesa
-            </a>
+
+          <div className="hidden md:ml-6 md:flex md:items-center md:space-x-1">
+            {navLinks.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                className="text-white hover:text-brand-gold px-3 py-2 text-sm font-medium transition-colors"
+              >
+                {label}
+              </a>
+            ))}
           </div>
-          
+
           <div className="-mr-2 flex items-center md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -58,27 +79,16 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-brand-dark shadow-xl">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a
-              href="#restaurante"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-white hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Restaurante
-            </a>
-            <a
-              href="#salon"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-white hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Salón de Eventos
-            </a>
-            <a
-              href="#reserva-mesa"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-white hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium"
-            >
-              Reservar Mesa
-            </a>
+            {navLinks.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-white hover:text-brand-gold block px-3 py-2 rounded-md text-base font-medium"
+              >
+                {label}
+              </a>
+            ))}
           </div>
         </div>
       )}

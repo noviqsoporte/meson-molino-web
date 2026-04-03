@@ -110,7 +110,7 @@ export default function RestauranteSection({ espacios, paquetes }: RestauranteSe
 
         {/* Subsección Nuestro Buffet */}
         {buffets.length > 0 && (
-          <div className="mt-24 pt-16 border-t border-gray-200">
+          <div id="buffets" className="mt-24 pt-16 border-t border-gray-200">
             <div className="text-center mb-12 opacity-0-init animate-slide-up-fade">
               <h3 className="font-playfair text-3xl md:text-4xl font-bold text-brand-dark mb-4 text-[var(--color-primario)]">
                 Nuestro Buffet

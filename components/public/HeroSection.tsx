@@ -3,17 +3,17 @@
 import { Configuracion } from '@/lib/types'
 
 export default function HeroSection({ config }: { config: Configuracion | null }) {
-  const bgImage = config?.hero_foto_url 
-    ? `url('${config.hero_foto_url}')` 
+  const bgImage = config?.hero_foto_url
+    ? `url('${config.hero_foto_url}')`
     : 'linear-gradient(to bottom right, var(--color-primario), var(--color-acento))'
-    
+
   const nombre = config?.nombre_negocio || 'El Mesón del Molino'
   const tagline = config?.tagline || 'Experiencias culinarias y eventos inolvidables'
 
   return (
     <div className="relative h-screen min-h-[600px] flex items-center justify-center">
       {/* Background w/ Overlay */}
-      <div 
+      <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ backgroundImage: bgImage }}
       >
@@ -28,34 +28,43 @@ export default function HeroSection({ config }: { config: Configuracion | null }
         <p className="font-inter text-lg md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto font-light tracking-wide">
           {tagline}
         </p>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-center items-center opacity-0-init animate-slide-up-fade delay-300 max-w-2xl mx-auto">
-          <a 
-            href="#restaurante" 
-            className="w-full flex items-center justify-center bg-transparent border-2 border-white/80 bg-white/10 text-white hover:bg-white/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 justify-center items-center opacity-0-init animate-slide-up-fade delay-300 max-w-3xl mx-auto">
+          <a
+            href="#restaurante"
+            className="flex items-center justify-center bg-white/10 border border-white/70 text-white hover:bg-white/20 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-medium shadow-lg"
           >
             Restaurante
           </a>
-          <a 
-            href="#salon" 
-            className="w-full flex items-center justify-center bg-transparent border-2 border-white/80 bg-white/10 text-white hover:bg-white/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+          <a
+            href="#buffets"
+            className="flex items-center justify-center bg-white/10 border border-white/70 text-white hover:bg-white/20 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-medium shadow-lg"
+          >
+            Buffets
+          </a>
+          <a
+            href="#salon"
+            className="flex items-center justify-center bg-white/10 border border-white/70 text-white hover:bg-white/20 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-medium shadow-lg"
           >
             Salón de Eventos
           </a>
-          <button 
-            type="button"
-            onClick={() => {
-              document.getElementById('salon')?.scrollIntoView({ behavior: 'smooth' })
-            }}
-            className="w-full flex items-center justify-center bg-brand-dark text-white hover:bg-brand-olive transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+          <a
+            href="#paquetes-eventos"
+            className="flex items-center justify-center bg-white/10 border border-white/70 text-white hover:bg-white/20 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-medium shadow-lg"
           >
-            Ver Paquetes
-          </button>
-          <a 
-            href="#reserva-mesa" 
-            className="w-full flex items-center justify-center bg-transparent border-2 border-brand-gold text-white hover:bg-brand-gold/20 transition-colors duration-300 px-8 py-3 rounded text-lg font-medium shadow-lg"
+            Paquetes
+          </a>
+          <a
+            href="#reserva-mesa"
+            className="flex items-center justify-center bg-white/10 border border-brand-gold/80 text-white hover:bg-brand-gold/20 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-medium shadow-lg"
           >
             Reservar Mesa
+          </a>
+          <a
+            href="#cotizar-evento"
+            className="flex items-center justify-center bg-brand-gold text-brand-dark hover:bg-brand-gold/80 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-bold shadow-lg"
+          >
+            Cotizar
           </a>
         </div>
       </div>

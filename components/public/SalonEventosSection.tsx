@@ -110,7 +110,7 @@ export default function SalonEventosSection({ espacios, paquetes }: SalonEventos
 
         {/* Subsección Paquetes de Evento */}
         {eventos.length > 0 && (
-          <div className="border-t border-gray-200 pt-16">
+          <div id="paquetes-eventos" className="border-t border-gray-200 pt-16">
             <div className="text-center mb-12 opacity-0-init animate-slide-up-fade">
               <h3 className="font-playfair text-3xl md:text-4xl font-bold text-[var(--color-primario)] mb-4">
                 Paquetes de Eventos
