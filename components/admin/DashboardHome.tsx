@@ -102,7 +102,9 @@ export default function DashboardHome() {
                 <div className="p-6 border-b border-[#E8E4DF]">
                     <h2 className="text-xl font-playfair text-[var(--color-primario)]">Últimas Reservas / Eventos</h2>
                 </div>
-                <div className="overflow-x-auto">
+
+                {/* Tabla desktop */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left font-inter">
                         <thead className="bg-[#F7F5F2] text-[#5C5C5C] text-sm uppercase">
                             <tr>
@@ -133,6 +135,28 @@ export default function DashboardHome() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Cards móvil */}
+                <div className="md:hidden divide-y divide-[#E8E4DF]">
+                    {ultimasReservas.length > 0 ? (
+                        ultimasReservas.map((reserva) => (
+                            <div key={reserva.id} className="p-4 space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <span className="font-medium text-[var(--color-primario)] font-inter">{reserva.nombre_cliente}</span>
+                                    {getStatusBadge(reserva.estado)}
+                                </div>
+                                <div className="flex items-center gap-2 text-sm text-[#5C5C5C] font-inter">
+                                    <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${reserva.tipo === 'Mesa' ? 'bg-purple-100 text-purple-800' : 'bg-indigo-100 text-indigo-800'}`}>
+                                        {reserva.tipo}
+                                    </span>
+                                    <span>{reserva.fecha} {reserva.hora}</span>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="px-4 py-8 text-center text-[#5C5C5C] font-inter">No hay reservas recientes.</p>
+                    )}
                 </div>
             </div>
         </div>

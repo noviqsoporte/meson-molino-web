@@ -86,8 +86,11 @@ export default function ImageUploader({ value, onChange, label }: ImageUploaderP
                     ) : (
                         <div className="flex flex-col items-center space-y-3 pointer-events-none">
                             <Upload className="text-[var(--color-secundario)]" size={32} />
-                            <span className="text-sm text-[var(--color-primario)] font-medium">
+                            <span className="hidden md:block text-sm text-[var(--color-primario)] font-medium text-center">
                                 Arrastra una imagen o haz clic para seleccionar
+                            </span>
+                            <span className="md:hidden text-sm text-[var(--color-primario)] font-medium text-center">
+                                Toca para elegir de tu fototeca
                             </span>
                         </div>
                     )}

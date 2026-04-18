@@ -47,7 +47,8 @@ export default function AdminClientLayout({ hasSession, paquetes }: AdminClientL
         <div className="flex min-h-screen bg-[#F7F5F2]">
             <Sidebar currentSection={currentSection} onNavClick={setCurrentSection} />
             <main className="flex-1 overflow-auto">
-                <div className="p-8 max-w-7xl mx-auto">
+                {/* pt-14 en móvil compensa el top bar fijo; pb-20 compensa el bottom nav */}
+                <div className="p-4 md:p-8 pt-16 md:pt-8 pb-24 md:pb-8 max-w-7xl mx-auto">
                     {renderSection()}
                 </div>
             </main>
