@@ -54,4 +54,5 @@ export interface Configuracion {
   color_primario?: string
   color_secundario?: string
   color_acento?: string
+  correo_contacto?: string
 }

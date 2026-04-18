@@ -133,6 +133,17 @@ export default function ConfiguracionAdmin() {
                                 />
                             </div>
 
+                            <div>
+                                <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Correo de Contacto</label>
+                                <input
+                                    type="email"
+                                    value={config.correo_contacto || ''}
+                                    onChange={(e) => setConfig({ ...config, correo_contacto: e.target.value })}
+                                    className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)] bg-white"
+                                    placeholder="contacto@ejemplo.com"
+                                />
+                            </div>
+
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Dirección Completa</label>
                                 <textarea

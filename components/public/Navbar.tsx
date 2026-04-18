@@ -43,7 +43,7 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
                 <img
                   src={logoUrl}
                   alt={nombreRestaurante}
-                  className="h-12 w-auto object-contain"
+                  className="h-24 w-auto object-contain"
                 />
               ) : (
                 <span className="font-playfair text-white text-2xl font-bold tracking-wider">
