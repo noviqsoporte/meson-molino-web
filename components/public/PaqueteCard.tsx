@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Paquete } from '@/lib/types'
 import { Users } from 'lucide-react'
+import { MiniSlider } from './MiniSlider'
 
 const formatCurrency = (val: string | undefined) =>
   new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 0 })
@@ -41,19 +42,16 @@ export default function PaqueteCard({ paquete }: { paquete: Paquete }) {
     .filter(item => item.trim().length > 0)
     .map(item => item.trim())
 
+  const fotos = [paquete.foto_url, paquete.foto_url_2, paquete.foto_url_3].filter(Boolean) as string[]
+
   return (
     <div className="bg-white rounded-xl shadow-[0_8px_32px_rgba(31,61,43,0.12)] overflow-hidden flex flex-col h-full opacity-0-init animate-slide-up-fade">
       {/* Image header */}
-      <div className="relative w-full h-48 bg-gray-100 flex-shrink-0">
-        {paquete.foto_url ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={paquete.foto_url}
-            alt={paquete.nombre}
-            className="w-full h-full object-cover rounded-t-2xl"
-          />
+      <div className="relative w-full flex-shrink-0">
+        {fotos.length > 0 ? (
+          <MiniSlider fotos={fotos} height="h-48" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-dark to-brand-olive text-white text-lg font-semibold">
+          <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-brand-dark to-brand-olive text-white text-lg font-semibold">
             No Image
           </div>
         )}

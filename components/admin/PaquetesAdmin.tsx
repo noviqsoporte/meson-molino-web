@@ -19,6 +19,8 @@ export default function PaquetesAdmin() {
         nombre: '',
         descripcion: '',
         foto_url: '',
+        foto_url_2: '',
+        foto_url_3: '',
         precio_por_persona: '',
         tipo: 'Evento',
         precio_nino: '',
@@ -104,6 +106,8 @@ export default function PaquetesAdmin() {
                 nombre: paquete.nombre,
                 descripcion: paquete.descripcion,
                 foto_url: paquete.foto_url,
+                foto_url_2: paquete.foto_url_2 || '',
+                foto_url_3: paquete.foto_url_3 || '',
                 precio_por_persona: paquete.precio_por_persona?.replace(/[^0-9.]/g, '') || '',
                 tipo: paquete.tipo || 'Evento',
                 precio_nino: paquete.precio_nino?.replace(/[^0-9.]/g, '') || '',
@@ -325,9 +329,25 @@ export default function PaquetesAdmin() {
 
                                         <div className="md:col-span-2">
                                             <ImageUploader
-                                                label="Foto del Paquete"
+                                                label="Foto del Paquete (Principal)"
                                                 value={formData.foto_url || ''}
                                                 onChange={(url) => setFormData({ ...formData, foto_url: url })}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <ImageUploader
+                                                label="Foto 2 (opcional)"
+                                                value={formData.foto_url_2 || ''}
+                                                onChange={(url) => setFormData({ ...formData, foto_url_2: url })}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <ImageUploader
+                                                label="Foto 3 (opcional)"
+                                                value={formData.foto_url_3 || ''}
+                                                onChange={(url) => setFormData({ ...formData, foto_url_3: url })}
                                             />
                                         </div>
 

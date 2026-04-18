@@ -23,6 +23,8 @@ export async function getPaquetes(): Promise<Paquete[]> {
     nombre: r.get('Nombre') as string || '',
     descripcion: r.get('Descripcion') as string || '',
     foto_url: r.get('Foto_URL') as string || '',
+    foto_url_2: r.get('Foto_URL_2') as string || undefined,
+    foto_url_3: r.get('Foto_URL_3') as string || undefined,
     precio_por_persona: r.get('Precio_Por_Persona') as string || '0',
     tipo: r.get('Tipo') as 'Evento' | 'Buffet' || 'Evento',
     precio_nino: r.get('Precio_Nino') as string || undefined,
@@ -45,6 +47,8 @@ export async function getAllPaquetes(): Promise<Paquete[]> {
     nombre: r.get('Nombre') as string || '',
     descripcion: r.get('Descripcion') as string || '',
     foto_url: r.get('Foto_URL') as string || '',
+    foto_url_2: r.get('Foto_URL_2') as string || undefined,
+    foto_url_3: r.get('Foto_URL_3') as string || undefined,
     precio_por_persona: r.get('Precio_Por_Persona') as string || '0',
     tipo: r.get('Tipo') as 'Evento' | 'Buffet' || 'Evento',
     precio_nino: r.get('Precio_Nino') as string || undefined,
@@ -62,6 +66,8 @@ export async function createPaquete(data: Omit<Paquete, 'id'>): Promise<Paquete>
     Nombre: data.nombre,
     Descripcion: data.descripcion,
     Foto_URL: data.foto_url,
+    Foto_URL_2: data.foto_url_2 || '',
+    Foto_URL_3: data.foto_url_3 || '',
     Precio_Por_Persona: data.precio_por_persona,
     Tipo: data.tipo,
     Precio_Nino: data.precio_nino || '',
@@ -80,6 +86,8 @@ export async function updatePaquete(id: string, data: Partial<Omit<Paquete, 'id'
   if (data.nombre !== undefined) fields['Nombre'] = data.nombre
   if (data.descripcion !== undefined) fields['Descripcion'] = data.descripcion
   if (data.foto_url !== undefined) fields['Foto_URL'] = data.foto_url
+  if (data.foto_url_2 !== undefined) fields['Foto_URL_2'] = data.foto_url_2
+  if (data.foto_url_3 !== undefined) fields['Foto_URL_3'] = data.foto_url_3
   if (data.precio_por_persona !== undefined) fields['Precio_Por_Persona'] = data.precio_por_persona
   if (data.personas_min !== undefined) fields['Personas_Min'] = data.personas_min
   if (data.personas_max !== undefined) fields['Personas_Max'] = data.personas_max
