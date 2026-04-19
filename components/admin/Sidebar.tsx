@@ -1,8 +1,8 @@
 'use client'
 
-import { LayoutDashboard, CalendarDays, PartyPopper, Package, Settings, LogOut, Landmark } from 'lucide-react'
+import { LayoutDashboard, CalendarDays, PartyPopper, Package, Settings, LogOut, Landmark, Tag } from 'lucide-react'
 
-export type Section = 'dashboard' | 'reservas' | 'eventos' | 'paquetes' | 'espacios' | 'configuracion'
+export type Section = 'dashboard' | 'reservas' | 'eventos' | 'paquetes' | 'espacios' | 'promociones' | 'configuracion'
 
 interface SidebarProps {
     currentSection: Section
@@ -25,6 +25,7 @@ export default function Sidebar({ currentSection, onNavClick }: SidebarProps) {
         { id: 'eventos', label: 'Eventos', icon: PartyPopper },
         { id: 'paquetes', label: 'Paquetes', icon: Package },
         { id: 'espacios', label: 'Espacios', icon: Landmark },
+        { id: 'promociones', label: 'Promociones', icon: Tag },
         { id: 'configuracion', label: 'Config', icon: Settings },
     ] as const
 

@@ -43,6 +43,21 @@ export interface Reserva {
   fecha_creacion?: string
 }
 
+export interface Promocion {
+  id: string
+  titulo: string
+  foto_url: string
+  vigencia_hasta: string
+  activo: boolean
+  orden: number
+}
+
+export interface Suscriptor {
+  id: string
+  correo: string
+  fecha_registro: string
+}
+
 export interface Configuracion {
   id: string
   nombre_negocio: string

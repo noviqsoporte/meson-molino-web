@@ -9,6 +9,7 @@ import EventosAdmin from '@/components/admin/EventosAdmin'
 import PaquetesAdmin from '@/components/admin/PaquetesAdmin'
 import EspaciosAdmin from '@/components/admin/EspaciosAdmin'
 import ConfiguracionAdmin from '@/components/admin/ConfiguracionAdmin'
+import PromocionesAdmin from '@/components/admin/PromocionesAdmin'
 import type { Section } from '@/components/admin/Sidebar'
 import { Paquete } from '@/lib/types'
 
@@ -36,6 +37,8 @@ export default function AdminClientLayout({ hasSession, paquetes }: AdminClientL
                 return <PaquetesAdmin />
             case 'espacios':
                 return <EspaciosAdmin />
+            case 'promociones':
+                return <PromocionesAdmin />
             case 'configuracion':
                 return <ConfiguracionAdmin />
             default:

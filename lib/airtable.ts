@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Airtable from 'airtable'
-import { Paquete, Reserva, Configuracion, Espacio } from './types'
+import { Paquete, Reserva, Configuracion, Espacio, Promocion, Suscriptor } from './types'
 
 const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
   .base(process.env.AIRTABLE_BASE_ID!)
@@ -9,6 +9,8 @@ const tablaPaquetes = base(process.env.AIRTABLE_TABLE_PAQUETES!)
 const tablaReservas = base(process.env.AIRTABLE_TABLE_RESERVAS!)
 const tablaConfiguracion = base(process.env.AIRTABLE_TABLE_CONFIGURACION!)
 const tablaEspacios = base(process.env.AIRTABLE_TABLE_ESPACIOS!)
+const tablaPromociones = base(process.env.AIRTABLE_TABLE_PROMOCIONES!)
+const tablaSuscriptores = base(process.env.AIRTABLE_TABLE_SUSCRIPTORES!)
 
 // ─── PAQUETES ───────────────────────────────────────────
 
@@ -272,4 +274,81 @@ export async function updateEspacio(id: string, data: Partial<Omit<Espacio, 'id'
 
 export async function deleteEspacio(id: string): Promise<void> {
   await tablaEspacios.destroy(id)
+}
+
+// ─── PROMOCIONES ─────────────────────────────────────────
+
+function mapPromocion(r: { id: string; get: (field: string) => unknown }): Promocion {
+  return {
+    id: r.id,
+    titulo: r.get('Titulo') as string || '',
+    foto_url: r.get('Foto_URL') as string || '',
+    vigencia_hasta: r.get('Vigencia_Hasta') as string || '',
+    activo: r.get('Activo') as boolean || false,
+    orden: r.get('Orden') as number || 0,
+  }
+}
+
+export async function getPromociones(): Promise<Promocion[]> {
+  const records = await tablaPromociones.select({
+    filterByFormula: '{Activo} = 1',
+    sort: [{ field: 'Orden', direction: 'asc' }]
+  }).all()
+  return records.map(mapPromocion)
+}
+
+export async function getAllPromociones(): Promise<Promocion[]> {
+  const records = await tablaPromociones.select({
+    sort: [{ field: 'Orden', direction: 'asc' }]
+  }).all()
+  return records.map(mapPromocion)
+}
+
+export async function createPromocion(data: Omit<Promocion, 'id'>): Promise<Promocion> {
+  const record = await tablaPromociones.create({
+    Titulo: data.titulo,
+    Foto_URL: data.foto_url,
+    Vigencia_Hasta: data.vigencia_hasta,
+    Activo: data.activo,
+    Orden: data.orden,
+  })
+  return { id: record.id, ...data }
+}
+
+export async function updatePromocion(id: string, data: Partial<Omit<Promocion, 'id'>>): Promise<void> {
+  const fields: Record<string, any> = {}
+  if (data.titulo !== undefined) fields['Titulo'] = data.titulo
+  if (data.foto_url !== undefined) fields['Foto_URL'] = data.foto_url
+  if (data.vigencia_hasta !== undefined) fields['Vigencia_Hasta'] = data.vigencia_hasta
+  if (data.activo !== undefined) fields['Activo'] = data.activo
+  if (data.orden !== undefined) fields['Orden'] = data.orden
+  await tablaPromociones.update(id, fields)
+}
+
+export async function deletePromocion(id: string): Promise<void> {
+  await tablaPromociones.destroy(id)
+}
+
+// ─── SUSCRIPTORES ─────────────────────────────────────────
+
+export async function findSuscriptor(correo: string): Promise<boolean> {
+  const records = await tablaSuscriptores.select({
+    filterByFormula: `{Correo} = '${correo.replace(/'/g, "\\'")}'`,
+    maxRecords: 1
+  }).all()
+  return records.length > 0
+}
+
+export async function createSuscriptor(correo: string): Promise<Suscriptor> {
+  const hoy = new Date().toISOString().split('T')[0]
+  const record = await tablaSuscriptores.create({
+    Correo: correo,
+    Fecha_Registro: hoy,
+  })
+  return { id: record.id, correo, fecha_registro: hoy }
+}
+
+export async function getSuscriptoresCount(): Promise<number> {
+  const records = await tablaSuscriptores.select({ fields: ['Correo'] }).all()
+  return records.length
 }

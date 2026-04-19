@@ -65,6 +65,16 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
             ))}
           </div>
 
+          <a
+              href="/promociones"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-colors mr-2"
+              style={{ backgroundColor: '#C9A227', color: '#1F3D2B' }}
+            >
+              Promociones
+            </a>
+
           <div className="-mr-2 flex items-center md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -89,6 +99,16 @@ export default function Navbar({ config }: { config: Configuracion | null }) {
                 {label}
               </a>
             ))}
+            <a
+              href="/promociones"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-md text-base font-semibold"
+              style={{ backgroundColor: '#C9A227', color: '#1F3D2B' }}
+            >
+              Promociones
+            </a>
           </div>
         </div>
       )}

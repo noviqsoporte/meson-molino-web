@@ -6,18 +6,24 @@ import { Reserva, Configuracion } from '@/lib/types'
 export default function DashboardHome() {
     const [reservas, setReservas] = useState<Reserva[]>([])
     const [config, setConfig] = useState<Configuracion | null>(null)
+    const [suscriptoresCount, setSuscriptoresCount] = useState(0)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [resReservas, resConfig] = await Promise.all([
+                const [resReservas, resConfig, resSuscriptores] = await Promise.all([
                     fetch('/api/reservas'),
-                    fetch('/api/configuracion')
+                    fetch('/api/configuracion'),
+                    fetch('/api/suscriptores'),
                 ])
 
                 if (resReservas.ok) setReservas(await resReservas.json())
                 if (resConfig.ok) setConfig(await resConfig.json())
+                if (resSuscriptores.ok) {
+                    const data = await resSuscriptores.json()
+                    setSuscriptoresCount(data.count ?? 0)
+                }
             } catch (error) {
                 console.error('Error fetching dashboard data:', error)
             } finally {
@@ -95,6 +101,10 @@ export default function DashboardHome() {
                 <div className="bg-white p-6 rounded-xl border border-[#E8E4DF] shadow-[0_2px_8px_rgba(31,61,43,0.08)]">
                     <p className="text-sm font-inter text-[#5C5C5C] mb-1">Pendientes de Confirmar</p>
                     <p className="text-3xl font-playfair text-[var(--color-primario)]">{reservasPendientes}</p>
+                </div>
+                <div className="bg-white p-6 rounded-xl border border-[#E8E4DF] shadow-[0_2px_8px_rgba(31,61,43,0.08)]">
+                    <p className="text-sm font-inter text-[#5C5C5C] mb-1">Suscriptores</p>
+                    <p className="text-3xl font-playfair text-[var(--color-primario)]">{suscriptoresCount}</p>
                 </div>
             </div>
 
