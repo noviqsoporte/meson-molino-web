@@ -281,47 +281,47 @@ export async function deleteEspacio(id: string): Promise<void> {
 function mapPromocion(r: { id: string; get: (field: string) => unknown }): Promocion {
   return {
     id: r.id,
-    titulo: r.get('Titulo') as string || '',
-    foto_url: r.get('Foto_URL') as string || '',
-    vigencia_hasta: r.get('Vigencia_Hasta') as string || '',
-    activo: r.get('Activo') as boolean || false,
-    orden: r.get('Orden') as number || 0,
+    titulo: r.get('titulo') as string || '',
+    foto_url: r.get('foto_url') as string || '',
+    vigencia_hasta: r.get('vigencia_hasta') as string || '',
+    activo: r.get('activo') as boolean || false,
+    orden: r.get('orden') as number || 0,
   }
 }
 
 export async function getPromociones(): Promise<Promocion[]> {
   const records = await tablaPromociones.select({
-    filterByFormula: '{Activo} = 1',
-    sort: [{ field: 'Orden', direction: 'asc' }]
+    filterByFormula: '{activo} = 1',
+    sort: [{ field: 'orden', direction: 'asc' }]
   }).all()
   return records.map(mapPromocion)
 }
 
 export async function getAllPromociones(): Promise<Promocion[]> {
   const records = await tablaPromociones.select({
-    sort: [{ field: 'Orden', direction: 'asc' }]
+    sort: [{ field: 'orden', direction: 'asc' }]
   }).all()
   return records.map(mapPromocion)
 }
 
 export async function createPromocion(data: Omit<Promocion, 'id'>): Promise<Promocion> {
   const record = await tablaPromociones.create({
-    Titulo: data.titulo,
-    Foto_URL: data.foto_url,
-    Vigencia_Hasta: data.vigencia_hasta,
-    Activo: data.activo,
-    Orden: data.orden,
+    titulo: data.titulo,
+    foto_url: data.foto_url,
+    vigencia_hasta: data.vigencia_hasta,
+    activo: data.activo,
+    orden: data.orden,
   })
   return { id: record.id, ...data }
 }
 
 export async function updatePromocion(id: string, data: Partial<Omit<Promocion, 'id'>>): Promise<void> {
   const fields: Record<string, any> = {}
-  if (data.titulo !== undefined) fields['Titulo'] = data.titulo
-  if (data.foto_url !== undefined) fields['Foto_URL'] = data.foto_url
-  if (data.vigencia_hasta !== undefined) fields['Vigencia_Hasta'] = data.vigencia_hasta
-  if (data.activo !== undefined) fields['Activo'] = data.activo
-  if (data.orden !== undefined) fields['Orden'] = data.orden
+  if (data.titulo !== undefined) fields['titulo'] = data.titulo
+  if (data.foto_url !== undefined) fields['foto_url'] = data.foto_url
+  if (data.vigencia_hasta !== undefined) fields['vigencia_hasta'] = data.vigencia_hasta
+  if (data.activo !== undefined) fields['activo'] = data.activo
+  if (data.orden !== undefined) fields['orden'] = data.orden
   await tablaPromociones.update(id, fields)
 }
 
@@ -333,7 +333,7 @@ export async function deletePromocion(id: string): Promise<void> {
 
 export async function findSuscriptor(correo: string): Promise<boolean> {
   const records = await tablaSuscriptores.select({
-    filterByFormula: `{Correo} = '${correo.replace(/'/g, "\\'")}'`,
+    filterByFormula: `{correo} = '${correo.replace(/'/g, "\\'")}'`,
     maxRecords: 1
   }).all()
   return records.length > 0
@@ -342,13 +342,13 @@ export async function findSuscriptor(correo: string): Promise<boolean> {
 export async function createSuscriptor(correo: string): Promise<Suscriptor> {
   const hoy = new Date().toISOString().split('T')[0]
   const record = await tablaSuscriptores.create({
-    Correo: correo,
-    Fecha_Registro: hoy,
+    correo: correo,
+    fecha_registro: hoy,
   })
   return { id: record.id, correo, fecha_registro: hoy }
 }
 
 export async function getSuscriptoresCount(): Promise<number> {
-  const records = await tablaSuscriptores.select({ fields: ['Correo'] }).all()
+  const records = await tablaSuscriptores.select({ fields: ['correo'] }).all()
   return records.length
 }
