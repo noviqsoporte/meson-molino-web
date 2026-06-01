@@ -69,6 +69,26 @@ export default function HeroSection({ config }: { config: Configuracion | null }
         </div>
       </div>
 
+      {/* Restaurant Guru 2026 Badge */}
+      <div className="absolute bottom-4 right-4 z-20">
+        <div
+          id="b-gold"
+          className="rg-award-lang-es_ES"
+          onClick={(e) => {
+            const target = e.target as HTMLElement;
+            if (target.nodeName.toLowerCase() !== 'a') {
+              const link = (e.currentTarget as HTMLElement).querySelector('.b-gold_r-link') as HTMLAnchorElement;
+              if (link) window.open(link.href);
+            }
+          }}
+        >
+          <a href="https://es.restaurantguru.com/El-Meson-Del-Molino-Tepotzotlan" className="b-gold_r-link" target="_blank" rel="noopener noreferrer">El Mesón del Molino</a>
+          <p className="b-gold_center">Recomendado</p>
+          <a href="https://restaurantguru.com" className="b-gold__link" target="_blank" rel="noopener noreferrer">Restaurant Guru</a>
+          <p className="b-gold_year">2026</p>
+        </div>
+      </div>
+
     </div>
   )
 }

@@ -26,6 +26,7 @@ export default async function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <head>
+        <link href="https://awards.infcdn.net/2024/r_gold.css" rel="stylesheet" />
         <style>{`
           :root {
             --color-primario: ${primario};
