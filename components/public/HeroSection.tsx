@@ -70,7 +70,7 @@ export default function HeroSection({ config }: { config: Configuracion | null }
       </div>
 
       {/* Restaurant Guru 2026 Badge */}
-      <div className="absolute bottom-4 right-4 z-20">
+      <div className="absolute bottom-4 left-4 z-20">
         <div
           id="b-gold"
           className="rg-award-lang-es_ES"
