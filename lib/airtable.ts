@@ -188,6 +188,7 @@ export async function getConfiguracion(): Promise<Configuracion | null> {
     color_secundario: r.get('Color_Secundario') as string || '#C9A227',
     color_acento: r.get('Color_Acento') as string || '#3F6F4E',
     correo_contacto: r.get('correo_contacto') as string || '',
+    anuncio_foto_url: r.get('Anuncio_Foto_URL') as string || '',
   }
 }
 
@@ -205,6 +206,7 @@ export async function updateConfiguracion(id: string, data: Partial<Omit<Configu
   if (data.color_secundario !== undefined) fields['Color_Secundario'] = data.color_secundario
   if (data.color_acento !== undefined) fields['Color_Acento'] = data.color_acento
   if (data.correo_contacto !== undefined) fields['correo_contacto'] = data.correo_contacto
+  if (data.anuncio_foto_url !== undefined) fields['Anuncio_Foto_URL'] = data.anuncio_foto_url
   await tablaConfiguracion.update(id, fields)
 }
 

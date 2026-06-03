@@ -218,6 +218,14 @@ export default function ConfiguracionAdmin() {
                                     onChange={(url) => setConfig({ ...config, hero_foto_url: url })}
                                 />
                             </div>
+
+                            <div>
+                                <ImageUploader
+                                    label="Foto del Aviso / Anuncio (Botón Flotante)"
+                                    value={config.anuncio_foto_url || ''}
+                                    onChange={(url) => setConfig({ ...config, anuncio_foto_url: url })}
+                                />
+                            </div>
                         </div>
                     </div>
 

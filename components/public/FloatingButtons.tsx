@@ -19,9 +19,9 @@ export default function FloatingButtons({ config }: { config: Configuracion | nu
         target="_blank"
         rel="noopener noreferrer"
         title="Contáctanos por WhatsApp"
-        className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="w-11 h-11 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-transform duration-300 ease-in-out"
       >
-        <MessageCircle className="w-7 h-7" />
+        <MessageCircle className="w-5 h-5" />
       </a>
 
       {/* Instagram Button */}
@@ -30,20 +30,20 @@ export default function FloatingButtons({ config }: { config: Configuracion | nu
         target="_blank"
         rel="noopener noreferrer"
         title="Síguenos en Instagram"
-        className="w-14 h-14 text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="w-11 h-11 text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-transform duration-300 ease-in-out"
         style={{ background: 'linear-gradient(45deg, #E1306C, #833AB4)' }}
       >
-        <Instagram className="w-7 h-7" />
+        <Instagram className="w-5 h-5" />
       </a>
 
       {/* Email Button */}
       <a
         href={mailHref}
         title="Envíanos un correo"
-        className="w-14 h-14 text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-transform duration-300 ease-in-out"
+        className="w-11 h-11 text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-transform duration-300 ease-in-out"
         style={{ background: 'linear-gradient(135deg, #EA4335, #FBBC05)' }}
       >
-        <Mail className="w-7 h-7" />
+        <Mail className="w-5 h-5" />
       </a>
     </div>
   )

@@ -1,5 +1,5 @@
-import { Paquete, Configuracion, Espacio, Promocion } from '@/lib/types'
-import { getPaquetes, getConfiguracion, getEspacios, getPromociones } from '@/lib/airtable'
+import { Paquete, Configuracion, Espacio } from '@/lib/types'
+import { getPaquetes, getConfiguracion, getEspacios } from '@/lib/airtable'
 import Navbar from '@/components/public/Navbar'
 import HeroSection from '@/components/public/HeroSection'
 import RestauranteSection from '@/components/public/RestauranteSection'
@@ -16,23 +16,20 @@ export const dynamic = 'force-dynamic'
 export default async function Home() {
   let paquetes: Paquete[] = []
   let espacios: Espacio[] = []
-  let promociones: Promocion[] = []
   let config: Configuracion | null = null
 
   try {
     // Usamos las funciones de lib/airtable directamente en lugar de un fetch con URL absoluta
     // para evitar problemas de resolución de host en diferentes entornos (dev vs prod).
     // getPaquetes() ya incluye el filtro `{Activo} = 1`.
-    const [paqData, confData, espData, promData] = await Promise.all([
+    const [paqData, confData, espData] = await Promise.all([
       getPaquetes(),
       getConfiguracion(),
-      getEspacios(),
-      getPromociones()
+      getEspacios()
     ])
     paquetes = paqData
     config = confData
     espacios = espData
-    promociones = promData
   } catch (error) {
     console.error('Error fetching data from Airtable:', error)
   }
@@ -69,7 +66,7 @@ export default async function Home() {
 
       <Footer config={config} />
       <FloatingButtons config={config} />
-      <PromoFloatingButton promociones={promociones} />
+      <PromoFloatingButton config={config} />
     </>
   )
 }

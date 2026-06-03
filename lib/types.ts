@@ -73,4 +73,5 @@ export interface Configuracion {
   color_secundario?: string
   color_acento?: string
   correo_contacto?: string
+  anuncio_foto_url?: string
 }
