@@ -15,6 +15,7 @@ export default function PromocionesAdmin() {
 
   const [formData, setFormData] = useState<Partial<Promocion>>({
     titulo: '',
+    descripcion: '',
     foto_url: '',
     vigencia_hasta: '',
     activo: true,
@@ -79,6 +80,7 @@ export default function PromocionesAdmin() {
       setEditingId(promo.id)
       setFormData({
         titulo: promo.titulo,
+        descripcion: promo.descripcion || '',
         foto_url: promo.foto_url,
         vigencia_hasta: promo.vigencia_hasta,
         activo: promo.activo,
@@ -86,7 +88,7 @@ export default function PromocionesAdmin() {
       })
     } else {
       setEditingId(null)
-      setFormData({ titulo: '', foto_url: '', vigencia_hasta: '', activo: true, orden: promociones.length + 1 })
+      setFormData({ titulo: '', descripcion: '', foto_url: '', vigencia_hasta: '', activo: true, orden: promociones.length + 1 })
     }
     setIsModalOpen(true)
   }
@@ -265,6 +267,17 @@ export default function PromocionesAdmin() {
                     value={formData.titulo}
                     onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
                     className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-primario)] mb-1">Descripción / Texto</label>
+                  <textarea
+                    rows={3}
+                    value={formData.descripcion || ''}
+                    onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+                    className="w-full px-4 py-2 border border-[#E8E4DF] rounded-lg focus:ring-2 focus:ring-[var(--color-acento)]"
+                    placeholder="Agrega detalles de la promoción..."
                   />
                 </div>
 

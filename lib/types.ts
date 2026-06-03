@@ -46,6 +46,7 @@ export interface Reserva {
 export interface Promocion {
   id: string
   titulo: string
+  descripcion?: string
   foto_url: string
   vigencia_hasta: string
   activo: boolean

@@ -282,6 +282,7 @@ function mapPromocion(r: { id: string; get: (field: string) => unknown }): Promo
   return {
     id: r.id,
     titulo: r.get('titulo') as string || '',
+    descripcion: r.get('descripcion') as string || undefined,
     foto_url: r.get('foto_url') as string || '',
     vigencia_hasta: r.get('vigencia_hasta') as string || '',
     activo: r.get('activo') as boolean || false,
@@ -307,6 +308,7 @@ export async function getAllPromociones(): Promise<Promocion[]> {
 export async function createPromocion(data: Omit<Promocion, 'id'>): Promise<Promocion> {
   const record = await tablaPromociones.create({
     titulo: data.titulo,
+    descripcion: data.descripcion || '',
     foto_url: data.foto_url,
     vigencia_hasta: data.vigencia_hasta,
     activo: data.activo,
@@ -318,6 +320,7 @@ export async function createPromocion(data: Omit<Promocion, 'id'>): Promise<Prom
 export async function updatePromocion(id: string, data: Partial<Omit<Promocion, 'id'>>): Promise<void> {
   const fields: Record<string, any> = {}
   if (data.titulo !== undefined) fields['titulo'] = data.titulo
+  if (data.descripcion !== undefined) fields['descripcion'] = data.descripcion
   if (data.foto_url !== undefined) fields['foto_url'] = data.foto_url
   if (data.vigencia_hasta !== undefined) fields['vigencia_hasta'] = data.vigencia_hasta
   if (data.activo !== undefined) fields['activo'] = data.activo
