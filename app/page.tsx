@@ -8,7 +8,6 @@ import ReservaMesaForm from '@/components/public/ReservaMesaForm'
 import CotizarEventoForm from '@/components/public/CotizarEventoForm'
 import Footer from '@/components/public/Footer'
 import FloatingButtons from '@/components/public/FloatingButtons'
-import PromoFloatingButton from '@/components/public/PromoFloatingButton'
 
 // Ensures the page is dynamically rendered for fresh data, equivalent to cache: 'no-store'
 export const dynamic = 'force-dynamic'
@@ -66,7 +65,6 @@ export default async function Home() {
 
       <Footer config={config} />
       <FloatingButtons config={config} />
-      <PromoFloatingButton config={config} />
     </>
   )
 }

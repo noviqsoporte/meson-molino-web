@@ -2,6 +2,7 @@
 
 import { Configuracion } from '@/lib/types'
 import { Instagram, Mail, MessageCircle } from 'lucide-react'
+import PromoFloatingButton from './PromoFloatingButton'
 
 export default function FloatingButtons({ config }: { config: Configuracion | null }) {
   const waHref = config?.telefono_wa
@@ -13,6 +14,9 @@ export default function FloatingButtons({ config }: { config: Configuracion | nu
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+      {/* Botón de Aviso Global */}
+      <PromoFloatingButton config={config} />
+
       {/* WhatsApp Button */}
       <a
         href={waHref}

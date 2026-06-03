@@ -28,8 +28,7 @@ export default function PromoFloatingButton({ config }: PromoFloatingButtonProps
 
   return (
     <>
-      {/* Botón flotante - Esquina inferior izquierda */}
-      <div className="fixed bottom-6 left-6 z-50">
+      {/* Botón flotante - Agrupado en la derecha */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`w-11 h-11 bg-[var(--color-acento)] text-white rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(0,0,0,0.25)] hover:scale-110 transition-all duration-300 ease-in-out relative ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
@@ -44,11 +43,10 @@ export default function PromoFloatingButton({ config }: PromoFloatingButtonProps
             </span>
           )}
         </button>
-      </div>
 
       {/* Popup de la Promoción */}
       <div 
-        className={`fixed bottom-6 left-6 z-50 w-[90vw] max-w-[360px] bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 origin-bottom-left ${
+        className={`fixed bottom-6 right-20 z-50 w-[90vw] max-w-[360px] bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 origin-bottom-right ${
           isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-0 opacity-0 translate-y-10 pointer-events-none'
         }`}
       >
