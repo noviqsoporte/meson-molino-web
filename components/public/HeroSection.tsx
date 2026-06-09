@@ -9,6 +9,7 @@ export default function HeroSection({ config }: { config: Configuracion | null }
 
   const nombre = config?.nombre_negocio || 'El Mesón del Molino'
   const tagline = config?.tagline || 'Experiencias culinarias y eventos inolvidables'
+  const promoUrl = config?.anuncio_foto_url
 
   return (
     <div className="relative h-screen min-h-[600px] flex items-center justify-center">
@@ -28,6 +29,18 @@ export default function HeroSection({ config }: { config: Configuracion | null }
         <p className="font-inter text-lg md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto font-light tracking-wide">
           {tagline}
         </p>
+
+        {/* Promo image inline in hero */}
+        {promoUrl && (
+          <div className="mb-8 flex justify-center opacity-0-init animate-slide-up-fade delay-200">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={promoUrl}
+              alt="Promoción especial"
+              className="rounded-2xl shadow-2xl max-h-48 md:max-h-64 w-auto object-contain border-2 border-white/20"
+            />
+          </div>
+        )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 justify-center items-center opacity-0-init animate-slide-up-fade delay-300 max-w-3xl mx-auto">
           <a
@@ -65,6 +78,14 @@ export default function HeroSection({ config }: { config: Configuracion | null }
             className="flex items-center justify-center bg-brand-gold text-brand-dark hover:bg-brand-gold/80 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-bold shadow-lg"
           >
             Cotizar
+          </a>
+          <a
+            href="https://www.menusincarta.comunidadquetzalli.com/elmesondelmolino"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="col-span-2 sm:col-span-3 flex items-center justify-center bg-white/15 border border-white/70 text-white hover:bg-white/25 transition-colors duration-300 px-5 py-3 rounded text-sm md:text-base font-medium shadow-lg gap-2"
+          >
+            🍽️ Ver Menú
           </a>
         </div>
       </div>
